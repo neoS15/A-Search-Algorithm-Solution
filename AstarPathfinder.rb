@@ -37,12 +37,12 @@ class AstarPathfinder
 	end
 
 	#calculate total cost F= g+ h
-	def determineFcost(newNode){
+	def determineFcost(newNode)
 		return newNode.gCost + newNode.hCost
-	}
-	def goalReached(nx,ny){
+	end
+	def goalReached(nx,ny)
 		return nx == @goalNode.x && ny == @goalNode.y
-	}
+	end
 
 	# expand node in all 4 directions
 	def getNeighbours(current_node)
