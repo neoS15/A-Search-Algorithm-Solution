@@ -20,7 +20,7 @@ class AstarPathfinder
 	  WATER = "~"
 	  #define a terrain cost hash
 	  TERRAIN_COST = {
-      '@' => :start, 'X' => :goal,
+      '@' => 0, 'X' => 0,
       '.' => 1, '*' => 2, '^' => 3
   	  }.freeze
 
@@ -47,12 +47,7 @@ class AstarPathfinder
 
 	#calculate cost from current node to next node
 	def cost(current_node,new_node)
-			current_node.gCost + current_move_cost(new_node)
-	end
-
-	#calculate gcost for all neighbors
-	def current_move_cost(new_node)
-
+		current_node.gCost + current_move_cost(new_node)
 	end
 
 	# expand node in all 4 directions
@@ -86,7 +81,7 @@ class AstarPathfinder
 			# grab the lowest f(x)
 	      low_i = 0
 	      for i in 0..@open_nodes.size-1
-	        if @open_nodes[i].fCost	 @open_nodes[low_i].fCost || (@open_nodes[i].fCost == @open_nodes[low_i].fCost && @open_nodes[i].hCost == @open_nodes[low_i].hCost) then
+	        if @open_nodes[i].fCost	< @open_nodes[low_i].fCost || (@open_nodes[i].fCost == @open_nodes[low_i].fCost && @open_nodes[i].hCost == @open_nodes[low_i].hCost) then
 	          low_i = i
 	        end
 	      end
@@ -113,6 +108,8 @@ class AstarPathfinder
 	      	neighbor = neighbours[n]
 	        nx       = neighbor[0] #grab the x value
 	        ny       = neighbor[1] #grab the y value
+		
+				movement_cost =  TERRAIN_COST[neighbor[0][1]]
 
 	        if(walkable(neighbor) && !goalReached(nx,ny))
 	        	in_closed = false
@@ -140,7 +137,7 @@ class AstarPathfinder
 	            new_node = Astar_Node.new(nx, ny, @closed_nodes.size-1, -1, -1, -1)
 
 	            # setup costs
-	            new_node.gCost = current_node.gCost + cost(current_node, new_node)
+	            new_node.gCost = current_node.gCost + movement_cost.to_i
 	            new_node.hCost = determineHeuristic(new_node, @goal_node)
 	            new_node.fCost = determineFcost(new_node)
 

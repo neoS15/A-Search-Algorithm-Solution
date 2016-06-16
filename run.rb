@@ -14,6 +14,6 @@ require_relative "AstarPathfinder"
 	start       = { 'x' => 0, 'y' => 0}
 	goal = { 'x' => nav_map.length-1, 'y' => nav_map.length-1 }
 	pathfinder  = AstarPathfinder.new(start, goal)
-	result      = pathfinder.findPath # returns path Array
+	result      = pathfinder.findPath     #returns path Array
 	print result
 #end
